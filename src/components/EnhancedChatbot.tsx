@@ -53,7 +53,7 @@ export const EnhancedChatbot: React.FC<EnhancedChatbotProps> = ({ isOpen, onClos
       console.log('Read from localStorage in Chatbot:', storedPdf);
       if (storedPdf) {
         // Convert base64 to Blob and extract text using backend
-        fetch('http://localhost:3001/api/extract-pdf-text', {
+        fetch('https://sustainability-analyzer.onrender.com/api/analyze-sustainability-report', {
           method: 'POST',
           body: (() => {
             const arr = storedPdf.split(',');
@@ -107,7 +107,7 @@ export const EnhancedChatbot: React.FC<EnhancedChatbotProps> = ({ isOpen, onClos
       const formData = new FormData();
       formData.append('file', file);
       try {
-        const response = await fetch('http://localhost:3001/api/extract-pdf-text', {
+        const response = await fetch('https://sustainability-analyzer.onrender.com/api/analyze-sustainability-report', {
           method: 'POST',
           body: formData
         });
@@ -155,7 +155,7 @@ export const EnhancedChatbot: React.FC<EnhancedChatbotProps> = ({ isOpen, onClos
       };
     }
     try {
-      const response = await fetch('http://localhost:3001/api/chat-query', {
+      const response = await fetch('https://sustainability-analyzer.onrender.com/api/chat-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userQuestion: userMessage, pdfText }),
