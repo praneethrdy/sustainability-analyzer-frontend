@@ -126,7 +126,7 @@ export const EnhancedChatbot: React.FC<EnhancedChatbotProps> = ({ isOpen, onClos
       };
     }
     try {
-      const response = await fetch('https://sustainability-analyzer.onrender.com/api/chat-query', {
+      const response = await fetch('https://sustainability-analyzer-backend.onrender.com/api/chat-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userQuestion: userMessage, pdfText }),
