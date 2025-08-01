@@ -78,7 +78,7 @@ export const EnhancedChatbot: React.FC<EnhancedChatbotProps> = ({ isOpen, onClos
       const formData = new FormData();
       formData.append('file', file);
       try {
-        const response = await fetch('https://sustainability-analyzer.onrender.com/api/analyze-sustainability-report', {
+        const response = await fetch('https://sustainability-analyzer-backend.onrender.com/api/analyze-sustainability-report', {
           method: 'POST',
           body: formData
         });
