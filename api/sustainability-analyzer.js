@@ -33,7 +33,10 @@ if (process.env.TOGETHER_API_KEY) {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://sustainability-analyzer-frontend.vercel.app',
+  credentials: true // allow cookies/auth if needed
+}));
 app.use(express.json());
 
 // Configure multer for file uploads
