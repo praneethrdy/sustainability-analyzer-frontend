@@ -36,7 +36,7 @@ function App() {
     formData.append('include_summary', 'true'); // Request AI summary
 
     try {
-      const response = await fetch('http://localhost:3001/api/analyze-sustainability-report', {
+      const response = await fetch('https://sustainability-analyzer.onrender.com/api/analyze-sustainability-report', {
         method: 'POST',
         body: formData,
       });
