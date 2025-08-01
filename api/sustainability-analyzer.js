@@ -4,6 +4,7 @@
  */
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const multer = require('multer');
 const cors = require('cors');
 const pdfParse = require('pdf-parse');
@@ -18,6 +19,14 @@ if (!process.env.TOGETHER_API_KEY) {
 }
 
 const app = express();
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    service: 'Sustainability Analyzer API',
+    timestamp: new Date().toISOString()
+  });
+});
 const port = process.env.PORT || 3001;
 
 let openai;
@@ -33,10 +42,29 @@ if (process.env.TOGETHER_API_KEY) {
 }
 
 // Middleware
+const allowedOrigins = [
+  'https://sustainability-analyzer-frontend.vercel.app',
+  'https://sustainability-analyzer-frontend-8y097razk.vercel.app',
+  'https://sustainabilit-git-949ba9-praneeth-reddy-devarannagaris-projects.vercel.app'
+];
+
+app.use((req, res, next) => {
+  console.log('Incoming request:', req.method, req.originalUrl, 'Origin:', req.headers.origin);
+  next();
+});
+
 app.use(cors({
-  origin: 'https://sustainability-analyzer-frontend.vercel.app',
-  credentials: true // allow cookies/auth if needed
+  origin: function (origin, callback) {
+    console.log('CORS origin check:', origin);
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+app.options('*', cors()); // Handle preflight requests
 app.use(express.json());
 
 // Configure multer for file uploads
@@ -659,6 +687,17 @@ app.use((error, req, res, next) => {
   console.error('Unhandled error:', error);
   res.status(500).json({ error: 'Internal server error' });
 });
+
+// Log all registered routes for debugging
+function logRoutes(app) {
+  console.log('Registered routes:');
+  app._router.stack.forEach(function (r) {
+    if (r.route && r.route.path) {
+      console.log(r.route.stack[0].method.toUpperCase(), r.route.path);
+    }
+  });
+}
+logRoutes(app);
 
 // Do not start the server here; server.js will handle app.listen().
 
