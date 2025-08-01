@@ -4,26 +4,20 @@ import { FileUpload } from './components/FileUpload';
 import { EnhancedDashboard } from './components/EnhancedDashboard';
 import { Reports } from './components/Reports';
 import { EnhancedChatbot } from './components/EnhancedChatbot';
-import { Gamification } from './components/Gamification';
+
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
 import { Leaf, MessageCircle } from 'lucide-react';
-import { SustainabilityMetrics, Badge, Pledge } from './types/sustainability';
-import { GamificationEngine } from './utils/gamification';
+import { SustainabilityMetrics } from './types/sustainability';
+
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [analysisData, setAnalysisData] = useState<SustainabilityMetrics | null>(null);
   const [showChatbot, setShowChatbot] = useState(false);
-  const [badges] = useState<Badge[]>(
-    GamificationEngine.AVAILABLE_BADGES.map(badge => ({
-      ...badge,
-      earned: false,
-      progress: Math.floor(Math.random() * 60) // Simulate progress
-    }))
-  );
-  const [pledges, setPledges] = useState<Pledge[]>([]);
+  
+
 
   // REPLACED: Old OCR logic removed. Now POST to backend and update analysisData.
   const handleFileUpload = async (files: File[]) => {
@@ -52,15 +46,6 @@ function App() {
     }
   };
 
-  const handleCreatePledge = (pledgeData: Omit<Pledge, 'id' | 'current' | 'status'>) => {
-    const newPledge: Pledge = {
-      ...pledgeData,
-      id: Date.now().toString(),
-      current: 0,
-      status: 'active'
-    };
-    setPledges(prev => [...prev, newPledge]);
-  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -129,24 +114,7 @@ function App() {
             </motion.div>
           )}
 
-          {activeTab === 'gamification' && (
-            <motion.div
-              key="gamification"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="pt-20 pb-12"
-            >
-              <Gamification
-                badges={badges}
-                pledges={pledges}
-                onCreatePledge={handleCreatePledge}
-              />
-            </motion.div>
-          )}
-
-          {!analysisData && (activeTab === 'dashboard' || activeTab === 'reports' || activeTab === 'gamification') && (
+          {!analysisData && (activeTab === 'dashboard' || activeTab === 'reports') && (
             <motion.div
               key="no-data"
               initial={{ opacity: 0, y: 20 }}

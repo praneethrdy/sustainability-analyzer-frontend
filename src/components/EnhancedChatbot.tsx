@@ -47,36 +47,7 @@ export const EnhancedChatbot: React.FC<EnhancedChatbotProps> = ({ isOpen, onClos
   const [pdfText, setPdfText] = useState<string | null>(null);
 
   // On mount, check for PDF in localStorage (from Upload section)
-  useEffect(() => {
-    if (!pdfText) {
-      const storedPdf = localStorage.getItem('pdfFileForChatbot');
-      console.log('Read from localStorage in Chatbot:', storedPdf);
-      if (storedPdf) {
-        // Convert base64 to Blob and extract text using backend
-        fetch('https://sustainability-analyzer.onrender.com/api/analyze-sustainability-report', {
-          method: 'POST',
-          body: (() => {
-            const arr = storedPdf.split(',');
-            const mimeMatch = arr[0].match(/:(.*?);/);
-            const mime = mimeMatch && mimeMatch[1] ? mimeMatch[1] : 'application/pdf';
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) {
-              u8arr[n] = bstr.charCodeAt(n);
-            }
-            const file = new File([u8arr], 'shared.pdf', { type: mime });
-            const formData = new FormData();
-            formData.append('file', file);
-            return formData;
-          })()
-        })
-          .then(res => res.ok ? res.text() : Promise.reject('Failed to extract shared PDF'))
-          .then(text => setPdfText(text))
-          .catch(() => {/* ignore error, fallback to normal */});
-      }
-    }
-  }, []);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

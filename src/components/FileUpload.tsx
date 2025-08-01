@@ -48,8 +48,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, uploadedFi
       reader.onload = function(e) {
         // Save base64 or raw text to localStorage (here we use base64 for simplicity)
         console.log('Saving to localStorage:', e.target?.result);
-        localStorage.setItem('pdfFileForChatbot', e.target?.result as string);
-        console.log('localStorage after saving:', localStorage.getItem('pdfFileForChatbot'));
+
+
       };
       reader.readAsDataURL(pdfFile);
     }

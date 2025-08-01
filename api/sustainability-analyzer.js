@@ -513,33 +513,6 @@ app.post('/api/analyze-sustainability-report', upload.single('file'), async (req
 });
 
 // New Chatbot Query Endpoint
-
-// Plain PDF text extraction endpoint
-app.post('/api/extract-pdf-text', upload.single('file'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
-    // Only allow PDFs
-    if (!req.file.originalname.toLowerCase().endsWith('.pdf')) {
-      return res.status(400).json({ error: 'Only PDF files are supported' });
-    }
-    // Extract text
-    const analyzer = new SustainabilityAnalyzer();
-    const text = await analyzer.extractTextFromPDF(req.file.buffer);
-    if (!text.trim()) {
-      return res.status(500).json({ error: 'No text could be extracted from the PDF' });
-    }
-    // Return plain text, preserving formatting
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.send(text);
-  } catch (error) {
-    console.error('PDF extraction error:', error);
-    res.status(500).json({ error: 'Failed to extract text from PDF', message: error.message });
-  }
-});
-
-// New Chatbot Query Endpoint
 app.post('/api/chat-query', async (req, res) => {
   try {
     const { userQuestion, pdfText } = req.body;

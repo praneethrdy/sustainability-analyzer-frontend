@@ -1,6 +1,6 @@
 import React from 'react';
 import { Download, Award, TrendingUp, Target, Users } from 'lucide-react';
-import { PDFGenerator } from '../utils/pdfGenerator';
+
 import { SustainabilityMetrics } from '../types/sustainability';
 
 interface ReportsProps {
@@ -8,23 +8,9 @@ interface ReportsProps {
 }
 
 export const Reports: React.FC<ReportsProps> = ({ data }) => {
-  const generateReport = async () => {
-    try {
-      await PDFGenerator.generateSustainabilityReport(data);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Error generating PDF report. Please try again.');
-    }
-  };
 
-  const generateCertificate = async () => {
-    try {
-      await PDFGenerator.generateCertificate(data);
-    } catch (error) {
-      console.error('Error generating certificate:', error);
-      alert('Error generating certificate. Please try again.');
-    }
-  };
+
+
 
   const getSustainabilityGrade = (score: number): { grade: string; color: string; description: string } => {
     if (score >= 80) return { grade: 'A+', color: 'text-green-600', description: 'Excellent' };
@@ -214,14 +200,14 @@ export const Reports: React.FC<ReportsProps> = ({ data }) => {
       <div className="text-center">
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
-            onClick={generateReport}
+            
             className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-green-700 transition-colors flex items-center justify-center"
           >
             <Download className="h-5 w-5 mr-2" />
             Download Full Report (PDF)
           </button>
           <button
-            onClick={generateCertificate}
+            
             className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
           >
             <Award className="h-5 w-5 mr-2" />

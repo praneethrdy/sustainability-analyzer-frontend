@@ -1,4 +1,0 @@
-# Minimal Netlify config to satisfy deployment tool requirements
-[build]
-  publish = "dist"
-  command = "npm run build"
